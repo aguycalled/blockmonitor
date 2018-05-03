@@ -24,7 +24,7 @@ sock.on('message', (topic, message) => {
     console.log(printf("¡¡¡''' -------------------------------------------------------------------------------- '''¡¡¡"));
     console.log(printf("¡¡¡''' Received Block: %62s '''¡¡¡", block.hash));   
     console.log(printf("¡¡¡''' ------------------------------------ '''¡¡¡''' --------------------------------- '''¡¡¡"));
-    console.log(printf("¡¡¡''' Network time: %22s '''¡¡¡''' Real time: %22s '''¡¡¡", hrt(new Date(block.time)), hrt(new Date())));
+    console.log(printf("¡¡¡''' Network time: %22s '''¡¡¡''' Real time: %22s '''¡¡¡", hrt(new Date(block.time * 1000)), hrt(new Date())));
     var diffPrevL = 0;
     if(localTime.length > 0) {
       diffPrevL = (new Date().getTime() / 1000) - localTime[localTime.length - 1];
