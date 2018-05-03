@@ -72,15 +72,15 @@ sock.on('message', (topic, message) => {
     console.log(printf("┌──────────────────────────────────────────────────────────────────────────────────┐"));
     console.log(printf("│ Hash: %64s           │", block.header.hash));   
     console.log(printf("│──────────────────────────────────────────────────────────────────────────────────│"));
-    console.log(printf("│ Version: %16s                │      Difficulty: %20s │",
+    console.log(printf("│ Version: %16s                │ Difficulty: %25s │",
        block.header.version.toString(16), block.header.bits));   
-    console.log(printf("│ Transactions: %11s                │      Size:  %23sKb │",
+    console.log(printf("│ Transactions: %11s                │ Size:  %28sKb │",
        block.transactions.length, parseInt(message.length*10/1024)/10));   
-    console.log(printf("│ `Per second: %12s                │      Mined by node id: %14s │",  tpsThisBlock, new Transaction(block.transactions[0]).strdzeel));
-    console.log(printf("│ `Max recorded: %10s                |                                       │", tpsMax));
-    console.log(printf("│ `Average: %15s                |                                       │", parseInt(nTransactions*10/accTime)/10));
+    console.log(printf("│ `Per second: %12s                │ Mined by node id: %19s │",  tpsThisBlock, new Transaction(block.transactions[0]).strdzeel));
+    console.log(printf("│ `Max recorded: %10s                │                                       │", tpsMax));
+    console.log(printf("│ `Average: %15s                │                                       │", parseInt(nTransactions*10/accTime)/10));
     console.log(printf("│──────────────────────────────────────────────────────────────────────────────────│"));
-    console.log(printf("│ Network time: %22s     │     Real time: %22s │", hrt(new Date(block.header.time * 1000)), hrt(new Date())));
+    console.log(printf("│ Network time: %22s     │ Real time: %26s │", hrt(new Date(block.header.time * 1000)), hrt(new Date())));
     console.log(printf("│ Block time: %24d     │     %33d │", diffPrevN, diffPrevL));
 
     localTime.push(parseInt(new Date().getTime() / 1000));
