@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/aguycalled/blockmonitor/issues"
   },
-  "homepage": "https://github.com/aguycalled/blockmonitor#readme"
+  "homepage": "https://github.com/aguycalled/blockmonitor#readme",
+  "dependencies": {
+    "bitcore-lib": "github:encrypt-s/bitcore-lib"
+  }
 }
