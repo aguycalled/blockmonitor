@@ -37,7 +37,7 @@ var tpsMax = nTransactions = accTime = lastCheck = 0;
 
 setInterval(() => {
   var nowTime = parseInt(new Date().getTime() / 1000);
-  if (localTime.length > 0 && (nowTime - localTime[localTime.length -1]) > 3 &&
+  if (localTime.length > 0 && (nowTime - localTime[localTime.length -1]) >= 1 &&
      (nowTime - lastCheck) >= 1) {
      process.stdout.write(printf("\r~~~INFO~~~ Last block was %s seconds ago.", nowTime - localTime[localTime.length -1]));
      lastCheck = nowTime;
@@ -67,26 +67,30 @@ sock.on('message', (topic, message) => {
     if(tpsThisBlock > tpsMax) {
       tpsMax = tpsThisBlock;
     }
-    console.log(printf("\r┌──────────────────────────────────────────────────────────────────────────────────┐"));
-    console.log(printf("\r│ Received Block: %62s │", block.header.hash));   
-    console.log(printf("\r│ Version: %16s                 Difficulty: %26s │",
+    console.log("                                                                           ");
+    console.log("~~~INFO~~~ NEW BLOCK");
+    console.log("");
+    console.log(printf("┌──────────────────────────────────────────────────────────────────────────────────┐"));
+    console.log(printf("│ Hash: %64s           │", block.header.hash));   
+    console.log(printf("│──────────────────────────────────────────────────────────────────────────────────│"));
+    console.log(printf("│ Version: %16s                │      Difficulty: %20s │",
        block.header.version.toString(16), block.header.bits));   
-    console.log(printf("\r│ Transactions: %11s                 Size:  %29sKb │",
+    console.log(printf("│ Transactions: %11s                │      Size:  %23sKb │",
        block.transactions.length, parseInt(message.length*10/1024)/10));   
-    console.log(printf("\r│ `Per second: %12s                 Mined by node id: %20s │",  tpsThisBlock, new Transaction(block.transactions[0]).strdzeel));
-    console.log(printf("\r│ `Max recorded: %10s                                                        │", tpsMax));
-    console.log(printf("\r│ `Average: %15s                                                        │", parseInt(nTransactions*10/accTime)/10));
-    console.log(printf("\r│──────────────────────────────────────────────────────────────────────────────────│"));
-    console.log(printf("\r│ Network time: %22s     │     Real time: %22s │", hrt(new Date(block.header.time * 1000)), hrt(new Date())));
-    console.log(printf("\r│ Block time: %24d     │     %33d │", diffPrevN, diffPrevL));
+    console.log(printf("│ `Per second: %12s                │      Mined by node id: %14s │",  tpsThisBlock, new Transaction(block.transactions[0]).strdzeel));
+    console.log(printf("│ `Max recorded: %10s                |                                       │", tpsMax));
+    console.log(printf("│ `Average: %15s                |                                       │", parseInt(nTransactions*10/accTime)/10));
+    console.log(printf("│──────────────────────────────────────────────────────────────────────────────────│"));
+    console.log(printf("│ Network time: %22s     │     Real time: %22s │", hrt(new Date(block.header.time * 1000)), hrt(new Date())));
+    console.log(printf("│ Block time: %24d     │     %33d │", diffPrevN, diffPrevL));
 
     localTime.push(parseInt(new Date().getTime() / 1000));
     networkTime.push(parseInt(block.header.time));
 
-    console.log(printf("\r│ Avg last 5: %24d     │     %33d │", avgdiff(networkTime, 5), avgdiff(localTime, 5)));
-    console.log(printf("\r│ Avg last 25: %23d     │     %33d │", avgdiff(networkTime, 25), avgdiff(localTime, 25)));
-    console.log(printf("\r│ Avg last 50: %23d     │     %33d │", avgdiff(networkTime, 50), avgdiff(localTime, 50)));
-    console.log(printf("\r└──────────────────────────────────────────────────────────────────────────────────┘"));
+    console.log(printf("│ Avg last 5: %24d     │     %33d │", avgdiff(networkTime, 5), avgdiff(localTime, 5)));
+    console.log(printf("│ Avg last 25: %23d     │     %33d │", avgdiff(networkTime, 25), avgdiff(localTime, 25)));
+    console.log(printf("│ Avg last 50: %23d     │     %33d │", avgdiff(networkTime, 50), avgdiff(localTime, 50)));
+    console.log(printf("└──────────────────────────────────────────────────────────────────────────────────┘"));
     console.log();
   }
 });
