@@ -1,0 +1,19 @@
+{
+  "name": "blockmonitor",
+  "version": "0.1.0",
+  "description": "Monitor block time on a NavCoin network",
+  "main": "monitor.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aguycalled/blockmonitor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aguycalled/blockmonitor/issues"
+  },
+  "homepage": "https://github.com/aguycalled/blockmonitor#readme"
+}
