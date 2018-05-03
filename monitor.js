@@ -69,11 +69,14 @@ sock.on('message', (topic, message) => {
     }
     console.log(printf("\r┌──────────────────────────────────────────────────────────────────────────────────┐"));
     console.log(printf("\r│ Received Block: %62s │", block.header.hash));   
-    console.log(printf("\r│ Version: %8s  Size: %6sKb   Difficulty: %9s   Transactions: %6s │",
-       block.header.version.toString(16), parseInt(message.length*10/1024)/10, block.header.bits, block.transactions.length));   
-    console.log(printf("\r│ Tps: %6s (Max: %6s Avg: %6s)     Mined by node id: %20s │", 
-       tpsThisBlock, tpsMax, parseInt(nTransactions*10/accTime)/10, new Transaction(block.transactions[0]).strdzeel));
-    console.log(printf("\r│──────────────────────────────────────────────────────────────────────────────────|"));
+    console.log(printf("\r│ Version: %16s                 Difficulty: %26s │",
+       block.header.version.toString(16), block.header.bits));   
+    console.log(printf("\r│ Transactions: %11s                 Size:  %29sKb │",
+       block.transactions.length, parseInt(message.length*10/1024)/10));   
+    console.log(printf("\r│ `Per second: %12s                 Mined by node id: %20s │",  tpsThisBlock, new Transaction(block.transactions[0]).strdzeel));
+    console.log(printf("\r│ `Max recorded: %10s                                                        │", tpsMax));
+    console.log(printf("\r│ `Average: %15s                                                        │", parseInt(nTransactions*10/accTime)/10));
+    console.log(printf("\r│──────────────────────────────────────────────────────────────────────────────────│"));
     console.log(printf("\r│ Network time: %22s     │     Real time: %22s │", hrt(new Date(block.header.time * 1000)), hrt(new Date())));
     console.log(printf("\r│ Block time: %24d     │     %33d │", diffPrevN, diffPrevL));
 
