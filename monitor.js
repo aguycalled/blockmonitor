@@ -25,8 +25,7 @@ console.log("│                                                                
 console.log("└──────────────────────────────────────────────────────────────────────────────────┘");
 
 console.log("");
-console.log("~~~INFO~~~ Subscribed to port "+port);
-console.log("~~~INFO~~~ NavCoin daemon should be launched with -zmqpubrawblock=tcp://127.0.0.1:"+port);
+console.log("~~~INFO~~~ NavCoin daemon should be run with -zmqpubrawblock=tcp://127.0.0.1:"+port);
 console.log("~~~STAT~~~ Waiting for blocks...");
 console.log("");
 
