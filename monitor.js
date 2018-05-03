@@ -20,9 +20,17 @@ console.log("¡¡¡''' Waiting for blocks...");
 var networkTime = [];
 var localTime = [];
 
-var tpsMax = 0;
-var nTransactions = 0;
-var accTime = 0;
+var tpsMax = nTransactions = accTime = lastCheck = 0;
+
+setInterval(() => {
+  var nowTime = parseInt(new Date().getTime() / 1000);
+  if (localTime.length > 0 && (nowTime - localTime[localTime.length -1]) > 3 &&
+     (nowTime - lastCheck) >= 1) {
+     process.stdout.write(printf("\rLast block was %s seconds ago.", nowTime - localTime[localTime.length -1]));
+     lastCheck = nowTime;
+  }
+}, 1000);
+
 
 sock.on('message', (topic, message) => {
   if(topic == 'rawblock') {
@@ -47,23 +55,23 @@ sock.on('message', (topic, message) => {
       tpsMax = tpsThisBlock;
     }
 
-    console.log(printf("¡¡¡''' -------------------------------------------------------------------------------- '''¡¡¡"));
-    console.log(printf("¡¡¡''' Received Block: %62s '''¡¡¡", block.header.hash));   
-    console.log(printf("¡¡¡''' Version: %8s  Size: %6sKb   Difficulty: %9s   Transactions: %6s '''¡¡¡",
+    console.log(printf("\r¡¡¡''' -------------------------------------------------------------------------------- '''¡¡¡"));
+    console.log(printf("\r¡¡¡''' Received Block: %62s '''¡¡¡", block.header.hash));   
+    console.log(printf("\r¡¡¡''' Version: %8s  Size: %6sKb   Difficulty: %9s   Transactions: %6s '''¡¡¡",
        block.header.version.toString(16), parseInt(message.length*10/1024)/10, block.header.bits, block.transactions.length));   
-    console.log(printf("¡¡¡''' Tps: %6s (Max: %6s Avg: %6s)     Mined by node id: %20s '''¡¡¡", 
+    console.log(printf("\r¡¡¡''' Tps: %6s (Max: %6s Avg: %6s)     Mined by node id: %20s '''¡¡¡", 
        tpsThisBlock, tpsMax, parseInt(nTransactions*10/accTime)/10, new Transaction(block.transactions[0]).strdzeel));
-    console.log(printf("¡¡¡''' -------------------------------------------------------------------------------- '''¡¡¡"));
-    console.log(printf("¡¡¡''' Network time: %22s '''¡¡¡''' Real time: %22s '''¡¡¡", hrt(new Date(block.header.time * 1000)), hrt(new Date())));
-    console.log(printf("¡¡¡''' Block time: %24d '''¡¡¡''' %33d '''¡¡¡", diffPrevN, diffPrevL));
+    console.log(printf("\r¡¡¡''' -------------------------------------------------------------------------------- '''¡¡¡"));
+    console.log(printf("\r¡¡¡''' Network time: %22s '''¡¡¡''' Real time: %22s '''¡¡¡", hrt(new Date(block.header.time * 1000)), hrt(new Date())));
+    console.log(printf("\r¡¡¡''' Block time: %24d '''¡¡¡''' %33d '''¡¡¡", diffPrevN, diffPrevL));
 
     localTime.push(parseInt(new Date().getTime() / 1000));
     networkTime.push(parseInt(block.header.time));
 
-    console.log(printf("¡¡¡''' Avg last 5: %24d '''¡¡¡''' %33d '''¡¡¡", avgdiff(networkTime, 5), avgdiff(localTime, 5)));
-    console.log(printf("¡¡¡''' Avg last 25: %23d '''¡¡¡''' %33d '''¡¡¡", avgdiff(networkTime, 25), avgdiff(localTime, 25)));
-    console.log(printf("¡¡¡''' Avg last 50: %23d '''¡¡¡''' %33d '''¡¡¡", avgdiff(networkTime, 50), avgdiff(localTime, 50)));
-    console.log(printf("¡¡¡''' -------------------------------------------------------------------------------- '''¡¡¡"));
+    console.log(printf("\r¡¡¡''' Avg last 5: %24d '''¡¡¡''' %33d '''¡¡¡", avgdiff(networkTime, 5), avgdiff(localTime, 5)));
+    console.log(printf("\r¡¡¡''' Avg last 25: %23d '''¡¡¡''' %33d '''¡¡¡", avgdiff(networkTime, 25), avgdiff(localTime, 25)));
+    console.log(printf("\r¡¡¡''' Avg last 50: %23d '''¡¡¡''' %33d '''¡¡¡", avgdiff(networkTime, 50), avgdiff(localTime, 50)));
+    console.log(printf("\r¡¡¡''' -------------------------------------------------------------------------------- '''¡¡¡"));
     console.log();
   }
 });
