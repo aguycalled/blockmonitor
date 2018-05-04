@@ -76,7 +76,7 @@ sock.on('message', (topic, message) => {
        block.header.version.toString(16), block.header.bits));   
     console.log(printf("│ Transactions: %11s                │ Size:  %28sKb │",
        block.transactions.length, parseInt(message.length*10/1024)/10));   
-    console.log(printf("│ `Per second: %12s                │ Mined by node id: %19s │",  tpsThisBlock, new Transaction(block.transactions[0]).strdzeel));
+    console.log(printf("│ `Per second: %12s                │ Mined by node id: %19s │",  tpsThisBlock, block.transactions.length > 1 ? new Transaction(block.transactions[1]).strdzeel : ""));
     console.log(printf("│ `Max recorded: %10s                │                                       │", tpsMax));
     console.log(printf("│ `Average: %15s                │                                       │", parseInt(nTransactions*10/accTime)/10));
     console.log(printf("│──────────────────────────────────────────────────────────────────────────────────│"));
