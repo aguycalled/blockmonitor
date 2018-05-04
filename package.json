@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/aguycalled/blockmonitor#readme",
   "dependencies": {
-    "bitcore-lib": "github:encrypt-s/bitcore-lib"
+    "bitcore-lib": "github:encrypt-s/bitcore-lib",
+    "human-readable-time": "^0.3.0",
+    "printf": "^0.3.0",
+    "zeromq": "^4.6.0"
   }
 }
