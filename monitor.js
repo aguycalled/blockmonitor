@@ -89,11 +89,14 @@ sock.on('message', (topic, message) => {
 
     localTime.push(parseInt(new Date().getTime() / 1000));
     networkTime.push(parseInt(block.header.time));
-    avgMultiplier = Math.max(5, parseInt(networkTime.length / 5));
+    avgMultiplier = Math.max(10, parseInt(networkTime.length / 10));
 
-    console.log(printf("│ Avg last %d: %28s │     %33s │", 1*avgMultiplier, avgdiff(networkTime, 1*avgMultiplier), avgdiff(localTime, 1*avgMultiplier)));
-    console.log(printf("│ Avg last %d: %27s │     %33s │", 5*avgMultiplier, avgdiff(networkTime, 5*avgMultiplier), avgdiff(localTime, 5*avgMultiplier)));
-    console.log(printf("│ Avg last %d: %27s │     %33s │", 10*avgMultiplier, avgdiff(networkTime, 10*avgMultiplier), avgdiff(localTime, 10*avgMultiplier)));
+    console.log(printf("│ Avg last %5s %25s │     %33s │",
+       0.5*avgMultiplier +":", avgdiff(networkTime, 0.5*avgMultiplier), avgdiff(localTime, 0.5*avgMultiplier)));
+    console.log(printf("│ Avg last %5s %25s │     %33s │",
+       1*avgMultiplier +":", avgdiff(networkTime, 1*avgMultiplier), avgdiff(localTime, 1*avgMultiplier)));
+    console.log(printf("│ Avg last %5s %25s │     %33s │",
+       5*avgMultiplier +":", avgdiff(networkTime, 5*avgMultiplier), avgdiff(localTime, 5*avgMultiplier)));
     console.log(printf("└──────────────────────────────────────────────────────────────────────────────────┘"));
     console.log();
   }
