@@ -34,6 +34,8 @@ var localTime = [];
 
 var tpsMax = nTransactions = accTime = lastCheck = 0;
 
+var avgMultiplier = 1;
+
 setInterval(() => {
   var nowTime = parseInt(new Date().getTime() / 1000);
   if (localTime.length > 0 && (nowTime - localTime[localTime.length -1]) >= 1 &&
@@ -41,7 +43,7 @@ setInterval(() => {
      process.stdout.write(printf("\r~~~INFO~~~ Last block was %s seconds ago.", nowTime - localTime[localTime.length -1]));
      lastCheck = nowTime;
   }
-}, 1000);
+}, 500);
 
 
 sock.on('message', (topic, message) => {
@@ -76,7 +78,7 @@ sock.on('message', (topic, message) => {
        block.header.version.toString(16), block.header.bits));   
     console.log(printf("│ Transactions: %26s │ Size:  %28sKb │",
        block.transactions.length, parseInt(message.length*10/1024)/10));   
-    console.log(printf("│ `Per second: %27s │ Mined by node id: %19s │",
+    console.log(printf("│ `Per second: %27s │ Mined by: %27s │",
        tpsThisBlock, block.transactions.length > 1 ? new Transaction(block.transactions[1]).strdzeel.split(";")[0] : ""));
     console.log(printf("│ `Max recorded: %25s │ With version: %23s │",
        tpsMax, block.transactions.length > 1 ? new Transaction(block.transactions[1]).strdzeel.split(";")[1] : ""));
@@ -87,17 +89,18 @@ sock.on('message', (topic, message) => {
 
     localTime.push(parseInt(new Date().getTime() / 1000));
     networkTime.push(parseInt(block.header.time));
+    avgMultiplier = Math.max(5, parseInt(networkTime.length / 5));
 
-    console.log(printf("│ Avg last 5: %28d │     %33d │", avgdiff(networkTime, 5), avgdiff(localTime, 5)));
-    console.log(printf("│ Avg last 25: %27d │     %33d │", avgdiff(networkTime, 25), avgdiff(localTime, 25)));
-    console.log(printf("│ Avg last 50: %27d │     %33d │", avgdiff(networkTime, 50), avgdiff(localTime, 50)));
+    console.log(printf("│ Avg last %d: %28s │     %33s │", 1*avgMultiplier, avgdiff(networkTime, 1*avgMultiplier), avgdiff(localTime, 1*avgMultiplier)));
+    console.log(printf("│ Avg last %d: %27s │     %33s │", 5*avgMultiplier, avgdiff(networkTime, 5*avgMultiplier), avgdiff(localTime, 5*avgMultiplier)));
+    console.log(printf("│ Avg last %d: %27s │     %33s │", 10*avgMultiplier, avgdiff(networkTime, 10*avgMultiplier), avgdiff(localTime, 10*avgMultiplier)));
     console.log(printf("└──────────────────────────────────────────────────────────────────────────────────┘"));
     console.log();
   }
 });
 
 function avgdiff(array, n) {
-  if(array.length - 1 < n) return 0;
+  if(array.length - 1 < n) return "N/A";
   var newArray = [];
   for (var i = 1; i < array.length; i++) {
     newArray.push(array[i] - array[i-1]);
